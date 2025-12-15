@@ -1,0 +1,55 @@
+name: Build Android APK
+
+on:
+  push:
+    branches:
+      - main # Oder dein Branch-Name, z.B. 'master'
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Code auschecken
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      # 2. Node.js Umgebung aufsetzen (für React Build)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3. Java Umgebung aufsetzen (für Android Build)
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 4. Abhängigkeiten installieren und React bauen
+      - name: Install Dependencies & Build Web App
+        run: |
+          npm ci
+          npm run build
+
+      # 5. Capacitor Sync (Kopiert den Web-Build in den Android-Ordner)
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      # 6. Android APK bauen (Debug Version)
+      - name: Build Android APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      # 7. Das APK als Artefakt hochladen
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 5
