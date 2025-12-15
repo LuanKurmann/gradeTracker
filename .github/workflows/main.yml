@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       # 4. Abhängigkeiten installieren und React bauen
       - name: Install Dependencies & Build Web App
