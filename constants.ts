@@ -646,7 +646,7 @@ export const TEMPLATES: SchoolConfig[] = [
       {
         id: "gp", name: "Geschichte und Politik", weight: 1, rounding: "0.5",
         hasFinalExam: false,
-        semesters: [1, 2, 3, 4], grades: [], commingGrades: [], subCategories: []
+        semesters: [1, 2], grades: [], commingGrades: [], subCategories: []
       },
       {
         id: "wr", name: "Wirtschaft und Recht", weight: 1, rounding: "0.5",
